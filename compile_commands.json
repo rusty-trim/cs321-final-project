@@ -1,0 +1,32 @@
+[
+  {
+    "file": "src/main.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "-o",
+      "game.out",
+      "src/main.cpp",
+      "-Iinclude",
+      "-I/usr/include/SDL2",
+      "-D_GNU_SOURCE=1",
+      "-D_REENTRANT"
+    ],
+    "directory": "/home/rusty/Projects/cs321/final_project",
+    "output": "game.out"
+  },
+  {
+    "file": "src/glad.c",
+    "arguments": [
+      "/usr/bin/g++",
+      "-o",
+      "game.out",
+      "src/glad.c",
+      "-Iinclude",
+      "-I/usr/include/SDL2",
+      "-D_GNU_SOURCE=1",
+      "-D_REENTRANT"
+    ],
+    "directory": "/home/rusty/Projects/cs321/final_project",
+    "output": "game.out"
+  }
+]

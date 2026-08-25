@@ -1,2 +1,2 @@
 build:
-	g++ -o game.out main.cpp `sdl2-config --cflags --libs`
+	g++ -o game.out src/main.cpp src/glad.c -Iinclude `sdl2-config --cflags --libs` -lGL -ldl
