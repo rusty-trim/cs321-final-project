@@ -3,30 +3,35 @@
     "file": "src/main.cpp",
     "arguments": [
       "/usr/bin/g++",
-      "-o",
-      "game.out",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-I/usr/include/SDL2",
+      "-D_GNU_SOURCE=1",
+      "-D_REENTRANT",
+      "-Iinclude",
+      "-Iinclude/graphics",
+      "-Ivendor",
+      "-Ivendor/KHR",
+      "-Ivendor/imgui",
+      "-Ivendor/glad",
+      "-Ivendor/glm",
+      "-Ivendor/glm/simd",
+      "-Ivendor/glm/gtc",
+      "-Ivendor/glm/gtx",
+      "-Ivendor/glm/ext",
+      "-Ivendor/glm/detail",
+      "-Ivendor/stb",
+      "-g",
+      "-O0",
+      "-MMD",
+      "-MP",
+      "-c",
       "src/main.cpp",
-      "-Iinclude",
-      "-I/usr/include/SDL2",
-      "-D_GNU_SOURCE=1",
-      "-D_REENTRANT"
-    ],
-    "directory": "/home/rusty/Projects/cs321/final_project",
-    "output": "game.out"
-  },
-  {
-    "file": "src/glad.c",
-    "arguments": [
-      "/usr/bin/g++",
       "-o",
-      "game.out",
-      "src/glad.c",
-      "-Iinclude",
-      "-I/usr/include/SDL2",
-      "-D_GNU_SOURCE=1",
-      "-D_REENTRANT"
+      "build/src/main.cpp.o"
     ],
     "directory": "/home/rusty/Projects/cs321/final_project",
-    "output": "game.out"
+    "output": "build/src/main.cpp.o"
   }
 ]

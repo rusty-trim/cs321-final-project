@@ -1,12 +1,17 @@
-CXX      := g++
-CC       := gcc
-SRC_DIR  := src
-BUILD_DIR:= build
-TARGET   := game.out
+CXX        := g++
+CC         := gcc
+SRC_DIR    := src
+VENDOR_DIR := vendor
+BUILD_DIR  := build
+TARGET     := game.out
 
-CXXFLAGS := -std=c++17 -Wall -Wextra $(shell sdl2-config --cflags) -Iinclude
-CFLAGS   := $(shell sdl2-config --cflags) -Iinclude
-LIBS     := $(shell sdl2-config --libs) -lGL -ldl
+# Automatically find ALL nested header directories under include/ and vendor/
+INC_DIRS   := $(shell find include vendor -type d)
+INC_FLAGS  := $(addprefix -I,$(INC_DIRS))
+
+CXXFLAGS   := -std=c++17 -Wall -Wextra $(shell sdl2-config --cflags) $(INC_FLAGS)
+CFLAGS     := $(shell sdl2-config --cflags) $(INC_FLAGS)
+LIBS       := $(shell sdl2-config --libs) -lGL -ldl
 
 MODE ?= debug
 ifeq ($(MODE),debug)
@@ -17,10 +22,16 @@ else
     CFLAGS   += -O2 -DNDEBUG
 endif
 
-CPP_SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-C_SRCS   := $(wildcard $(SRC_DIR)/*.c)
-OBJS     := $(CPP_SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o) \
-            $(C_SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+# 1. Find ALL C and C++ sources recursively inside src/ and vendor/
+CPP_SRCS := $(shell find $(SRC_DIR) $(VENDOR_DIR) -type f -name "*.cpp" 2>/dev/null)
+C_SRCS   := $(shell find $(SRC_DIR) $(VENDOR_DIR) -type f -name "*.c" 2>/dev/null)
+
+# 2. Map source paths directly to build/ while preserving directory paths
+#    e.g., src/world/chunk.cpp -> build/src/world/chunk.o
+CPP_OBJS := $(CPP_SRCS:%=$(BUILD_DIR)/%.o)
+C_OBJS   := $(C_SRCS:%=$(BUILD_DIR)/%.o)
+
+OBJS     := $(CPP_OBJS) $(C_OBJS)
 DEPS     := $(OBJS:.o=.d)
 
 .PHONY: all clean run
@@ -30,14 +41,15 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LIBS)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+# Compile C++ sources (mkdir -p $(dir $@) creates nested subdirectories inside build/)
+$(BUILD_DIR)/%.cpp.o: %.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
+# Compile C sources
+$(BUILD_DIR)/%.c.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
 
 -include $(DEPS)
 
