@@ -167,7 +167,7 @@ int main()
             }
         }
 
-        glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
+        glClearColor(0.51f, 0.78f, 0.9f, 1.0f);
         renderer.clear();
 
         int xrel = 0, yrel = 0;

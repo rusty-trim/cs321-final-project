@@ -20,7 +20,7 @@ void Camera::handle_mouse(float dx, float dy)
 {
     m_yaw += dx * m_sensitivity;
     m_pitch += -dy * m_sensitivity;
-    m_pitch = glm::clamp(m_pitch, -89.0f, 89.0f); // Prevents gimbal clip where you can look behind yourself and things become upside down.
+    m_pitch = glm::clamp(m_pitch, -89.0f, 89.0f); // Prevents gimbal lock where you can look behind yourself and things become upside down.
 
     glm::vec3 dir;
     dir.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
