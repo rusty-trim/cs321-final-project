@@ -1,6 +1,6 @@
 [
   {
-    "file": "src/main.cpp",
+    "file": "src/graphics/camera.cpp",
     "arguments": [
       "/usr/bin/g++",
       "-std=c++17",
@@ -27,11 +27,11 @@
       "-MMD",
       "-MP",
       "-c",
-      "src/main.cpp",
+      "src/graphics/camera.cpp",
       "-o",
-      "build/src/main.cpp.o"
+      "build/src/graphics/camera.cpp.o"
     ],
     "directory": "/home/rusty/Projects/cs321/final_project",
-    "output": "build/src/main.cpp.o"
+    "output": "build/src/graphics/camera.cpp.o"
   }
 ]

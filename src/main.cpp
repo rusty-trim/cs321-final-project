@@ -22,7 +22,7 @@
 
 int main()
 {
-    int is_running = 1;
+    bool is_running = true;
     SDL_Window *window = NULL;
     SDL_GLContext gl_context;
     SDL_Event event;
