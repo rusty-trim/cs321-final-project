@@ -1,6 +1,6 @@
 [
   {
-    "file": "src/graphics/camera.cpp",
+    "file": "src/graphics/texture_buffer.cpp",
     "arguments": [
       "/usr/bin/g++",
       "-std=c++17",
@@ -13,7 +13,6 @@
       "-Iinclude/graphics",
       "-Ivendor",
       "-Ivendor/KHR",
-      "-Ivendor/imgui",
       "-Ivendor/glad",
       "-Ivendor/glm",
       "-Ivendor/glm/simd",
@@ -27,11 +26,11 @@
       "-MMD",
       "-MP",
       "-c",
-      "src/graphics/camera.cpp",
+      "src/graphics/texture_buffer.cpp",
       "-o",
-      "build/src/graphics/camera.cpp.o"
+      "build/src/graphics/texture_buffer.cpp.o"
     ],
     "directory": "/home/rusty/Projects/cs321/final_project",
-    "output": "build/src/graphics/camera.cpp.o"
+    "output": "build/src/graphics/texture_buffer.cpp.o"
   }
 ]

@@ -13,12 +13,14 @@
 #include "graphics/element_buffer.hpp"
 #include "graphics/renderer.hpp"
 #include "graphics/shader.hpp"
+#include "graphics/texture_buffer.hpp"
 #include "graphics/vertex_array.hpp"
 #include "graphics/vertex_buffer.hpp"
 #include <cstdio>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 int main()
 {
@@ -76,36 +78,85 @@ int main()
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-    float vertices[] = {
+    // float vertices[] = {
+    //     // Front Face
+    //     -0.5f, -0.5f, 0.5f,
+    //     0.5f, -0.5f, 0.5f,
+    //     0.5f, 0.5f, 0.5f,
+    //     -0.5f, 0.5f, 0.5f,
+    //     // Back Face
+    //     -0.5f, -0.5f, -0.5f,
+    //     0.5f, -0.5f, -0.5f,
+    //     0.5f, 0.5f, -0.5f,
+    //     -0.5f, 0.5f, -0.5f};
+
+    std::vector<Vertex> vertices = {
         // Front Face
-        -0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
+        {{-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f}, 0}, // Bottom Left
+        {{0.5f, -0.5f, 0.5f}, {1.0f, 0.0f}, 0},  // Bottom Right
+        {{0.5f, 0.5f, 0.5f}, {1.0f, 1.0f}, 0},   // Top Right
+        {{-0.5f, 0.5f, 0.5f}, {0.0f, 1.0f}, 0},  // Top Left
+
+        // Top Face
+        {{-0.5f, 0.5f, 0.5f}, {0.0f, 0.0f}, 0},  // Bottom Left
+        {{0.5f, 0.5f, 0.5f}, {1.0f, 0.0f}, 0},   // Bottom Right
+        {{0.5f, 0.5f, -0.5f}, {1.0f, 1.0f}, 0},  // Top Right
+        {{-0.5f, 0.5f, -0.5f}, {0.0f, 1.0f}, 0}, // Top Left
+
         // Back Face
-        -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f};
+        {{0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}, 0},  // Bottom Left
+        {{-0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}, 0}, // Bottom Right
+        {{-0.5f, 0.5f, -0.5f}, {1.0f, 1.0f}, 0},  // Top Right
+        {{0.5f, 0.5f, -0.5f}, {0.0f, 1.0f}, 0},   // Top Left
+
+        // Bottom Face
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}, 0}, // Bottom Left
+        {{0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}, 0},  // Bottom Right
+        {{0.5f, -0.5f, 0.5f}, {1.0f, 1.0f}, 0},   // Top Right
+        {{-0.5f, -0.5f, 0.5f}, {0.0f, 1.0f}, 0},  // Top Left
+
+        // Left Face
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}, 0}, // Bottom Left
+        {{-0.5f, -0.5f, 0.5f}, {1.0f, 0.0f}, 0},  // Bottom Right
+        {{-0.5f, 0.5f, 0.5f}, {1.0f, 1.0f}, 0},   // Top Right
+        {{-0.5f, 0.5f, -0.5f}, {0.0f, 1.0f}, 0},  // Top Left
+
+        // Right Face
+        {{0.5f, -0.5f, 0.5f}, {0.0f, 0.0f}, 0},  // Bottom Left
+        {{0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}, 0}, // Bottom Right
+        {{0.5f, 0.5f, -0.5f}, {1.0f, 1.0f}, 0},  // Top Right
+        {{0.5f, 0.5f, 0.5f}, {0.0f, 1.0f}, 0},   // Top Left
+
+    };
+
+    // unsigned int indices[] = {
+    //     // Front
+    //     0, 1, 2, 2, 3, 0,
+    //     // Right
+    //     1, 5, 6, 6, 2, 1,
+    //     // Back
+    //     5, 4, 7, 7, 6, 5,
+    //     // Left
+    //     4, 0, 3, 3, 7, 4,
+    //     // Top
+    //     3, 2, 6, 6, 7, 3,
+    //     // Bottom
+    //     4, 5, 1, 1, 0, 4};
 
     unsigned int indices[] = {
-        // Front
         0, 1, 2, 2, 3, 0,
-        // Right
-        1, 5, 6, 6, 2, 1,
-        // Back
-        5, 4, 7, 7, 6, 5,
-        // Left
-        4, 0, 3, 3, 7, 4,
-        // Top
-        3, 2, 6, 6, 7, 3,
-        // Bottom
-        4, 5, 1, 1, 0, 4};
+        4, 5, 6, 6, 7, 4,
+        8, 9, 10, 10, 11, 8,
+        12, 13, 14, 14, 15, 12,
+        16, 17, 18, 18, 19, 16,
+        20, 21, 22, 22, 23, 20};
 
     VertexArray va;
-    VertexBuffer vb(vertices, 8 * 3 * sizeof(float));
+    VertexBuffer vb(vertices);
     VertexBufferLayout layout;
     layout.push<float>(3);
+    layout.push<float>(2);
+    layout.push<unsigned int>(1);
 
     va.add_buffer(vb, layout);
 
@@ -132,6 +183,12 @@ int main()
     glm::mat4 mvp = proj * view * model;
 
     Shader shader("assets/shaders/basic.shader");
+    
+    std::vector<const char *> texture_paths = {
+        "assets/textures/block/stone.png"
+    };
+
+    TextureBuffer tb(texture_paths);
     shader.bind();
 
     va.unbind();
@@ -167,7 +224,7 @@ int main()
             }
         }
 
-        glClearColor(0.51f, 0.78f, 0.9f, 1.0f);
+        GLCall(glClearColor(0.51f, 0.78f, 0.9f, 1.0f));
         renderer.clear();
 
         int xrel = 0, yrel = 0;
@@ -197,6 +254,8 @@ int main()
         mvp = proj * camera.get_view_matrix() * model;
 
         shader.bind();
+        tb.bind();
+        shader.set_uniform1i("u_textures", 0);
         shader.set_uniform_mat4f("u_mvp", mvp);
         renderer.draw(va, eb, shader);
 
