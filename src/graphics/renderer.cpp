@@ -1,7 +1,6 @@
 #include "graphics/renderer.hpp"
-#include "graphics/element_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/vertex_array.hpp"
+#include "glad.h"
+#include <cstdio>
 
 void gl_clear_error()
 {
@@ -18,15 +17,6 @@ bool gl_log_call(const char *function, const char *file, int line)
     }
 
     return true;
-}
-
-void Renderer::draw(const VertexArray &va, const ElementBuffer &eb, const Shader &shader) const
-{
-    shader.bind();
-    va.bind();
-    eb.bind();
-
-    GLCall(glDrawElements(GL_TRIANGLES, eb.get_count(), GL_UNSIGNED_INT, NULL));
 }
 
 void Renderer::clear() const

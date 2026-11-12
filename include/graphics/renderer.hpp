@@ -1,7 +1,4 @@
 #pragma once
-#include "graphics/element_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/vertex_array.hpp"
 
 #define GLCall(x)     \
     gl_clear_error(); \
@@ -15,5 +12,4 @@ class Renderer
 {
   public:
     void clear() const;
-    void draw(const VertexArray &va, const ElementBuffer &eb, const Shader &shader) const;
 };

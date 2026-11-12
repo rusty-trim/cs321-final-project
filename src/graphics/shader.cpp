@@ -117,6 +117,11 @@ void Shader::set_uniform1f(const char *name, float value)
     GLCall(glUniform1f(get_uniform_location(name), value));
 }
 
+void Shader::set_uniform3f(const char *name, float v0, float v1, float v2)
+{
+    GLCall(glUniform3f(get_uniform_location(name), v0, v1, v2));
+}
+
 void Shader::set_uniform4f(const char *name, float v0, float v1, float v2, float v3)
 {
     GLCall(glUniform4f(get_uniform_location(name), v0, v1, v2, v3));

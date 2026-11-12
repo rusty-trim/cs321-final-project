@@ -14,7 +14,7 @@ class Shader
   private:
     unsigned int m_programID;
     const char *m_filepath;
-    std::unordered_map<const char *, int> m_uniform_location_cache;
+    std::unordered_map<std::string, int> m_uniform_location_cache;
 
   public:
     Shader(const char *filepath);
@@ -25,6 +25,7 @@ class Shader
 
     void set_uniform1i(const char *name, int value);
     void set_uniform1f(const char *name, float value);
+    void set_uniform3f(const char *name, float v0, float v1, float v2);
     void set_uniform4f(const char *name, float v0, float v1, float v2, float v3);
     void set_uniform_mat4f(const char *name, glm::mat4 &mat);
 

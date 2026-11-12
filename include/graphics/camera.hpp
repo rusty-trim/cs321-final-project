@@ -1,35 +1,39 @@
+#pragma once
 #include "matrix_float4x4.hpp"
-#include "matrix_transform.hpp"
 #include "vector_float3.hpp"
-
-enum CameraDirection
-{
-    FORWARD,
-    BACKWARD,
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
-};
 
 class Camera
 {
   private:
-    glm::vec3 m_position;
-    glm::vec3 m_front;
-    glm::vec3 m_up;
-    float m_yaw = -90.0f, m_pitch = 0.0f;
-    float m_speed = 5.0f, m_sensitivity = 0.1f;
+    glm::vec3 m_position{0.0f};
+    glm::vec3 m_front{0.0f, 0.0f, -1.0f};
+    glm::vec3 m_up{0.0f, 1.0f, 0.0f};
+    mutable glm::mat4 m_view_matrix, m_proj_matrix;
+    mutable bool m_view_dirty = true;
+    mutable bool m_proj_dirty = true;
+
+    float m_fov;
+    float m_aspect_ratio;
+    float m_near_plane, m_far_plane;
 
   public:
-    Camera(const glm::vec3 &position, const glm::vec3 &front, const glm::vec3 &up);
-    ~Camera();
+    Camera(float fov, float aspect_ratio, float near_plane, float far_plane);
 
-    glm::mat4 get_view_matrix() const
+    void set_pose(const glm::vec3 &eye, float yaw_deg, float pitch_deg);
+
+    glm::mat4 &get_view_matrix() const;
+    glm::mat4 &get_proj_matrix() const;
+
+    glm::vec3 get_position() const
     {
-        return glm::lookAt(m_position, m_position + m_front, m_up);
+        return m_position;
     }
 
-    void handle_mouse(float dx, float dy);
-    void handle_keyboard(CameraDirection op, float dt, bool sprint = false);
+    glm::vec3 get_front() const
+    {
+        return m_front;
+    }
+
+    void set_aspect_ratio(float aspect_ratio);
+    void set_fov(float fov);
 };
