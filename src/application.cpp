@@ -157,6 +157,7 @@ void Application::run()
     {
         Uint64 now = SDL_GetPerformanceCounter();
         float dt = (float)(now - last_time) / SDL_GetPerformanceFrequency();
+        dt = std::min(dt, 0.05f);
         last_time = now;
 
         time_elapsed += dt;
