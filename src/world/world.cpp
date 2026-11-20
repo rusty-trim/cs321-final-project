@@ -72,6 +72,11 @@ BlockID get_world_block(const WorldData &world, int world_x, int world_y, int wo
     return get_block(it->second, world_x - coord.x * CHUNK_SIZE, world_y, world_z - coord.z * CHUNK_SIZE);
 }
 
+bool is_world_block_solid(const WorldData &world, int world_x, int world_y, int world_z)
+{
+    return get_world_block(world, world_x, world_y, world_z) != BLOCK_AIR;
+}
+
 bool set_world_block(WorldData &world, int world_x, int world_y, int world_z, BlockID id)
 {
     if (world_y < 0 || world_y >= CHUNK_MAX_HEIGHT)

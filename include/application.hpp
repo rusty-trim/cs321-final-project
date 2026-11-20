@@ -9,6 +9,7 @@
 #include "graphics/ui/hotbar.hpp"
 #include "graphics/ui/ui.hpp"
 #include "sdl_context.hpp"
+#include "ui/block_icons.hpp"
 #include "ui/ui_element.hpp"
 #include "window.hpp"
 #include "world/world.hpp"
@@ -29,6 +30,8 @@ class Application
     UiContext m_ui_context;
 
     Shader m_ui_shader;
+    Shader m_ui_block_shader;
+    BlockIconMesh m_block_icons;
     Hotbar m_hotbar{.background = 1, .selector = 2};
     std::vector<UiElement> m_ui_elements;
     Texture2D m_crosshair_texture;

@@ -1,6 +1,9 @@
 #pragma once
+
 #include "game/inventory.hpp"
+#include "game/physics.hpp"
 #include "vector_float3.hpp"
+#include "world/world.hpp"
 
 struct MoveInput
 {
@@ -21,7 +24,7 @@ enum GameMode
 class Player
 {
   private:
-    glm::vec3 m_pos;            // feet position
+    PhysicsBody m_body;
     float m_yaw = -90.0f;       // degrees
     float m_pitch = 0.0f;       // degrees
     float m_speed = 4.3f;       // bps (blocks per second)
@@ -35,21 +38,26 @@ class Player
     static constexpr float WIDTH = 0.6f;
     static constexpr float HEIGHT = 1.8f;
 
-    explicit Player(const glm::vec3 &pos) : m_pos(pos) {};
+    explicit Player(const glm::vec3 &pos) : m_body({.pos = pos, .size = glm::vec3(WIDTH, HEIGHT, WIDTH)}) {};
 
     void look(float dx, float dy);
-    void update(const MoveInput &in, float dt);
+    void update(const MoveInput &in, const WorldData &world, float dt);
 
     glm::vec3 get_look_dir() const;
 
-    glm::vec3 get_position() const
+    glm::vec3 get_pos() const
     {
-        return m_pos;
+        return m_body.pos;
+    }
+
+    glm::vec3 get_vel() const
+    {
+        return m_body.vel;
     }
 
     glm::vec3 get_eye_position() const
     {
-        return m_pos + glm::vec3(0.0f, m_eye_height, 0.0f);
+        return m_body.pos + glm::vec3(0.0f, m_eye_height, 0.0f);
     }
 
     float get_yaw() const

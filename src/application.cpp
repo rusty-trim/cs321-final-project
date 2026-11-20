@@ -5,11 +5,11 @@
 #include "game/inventory.hpp"
 #include "glad.h"
 #include "matrix_transform.hpp"
+#include "ui/block_icons.hpp"
 #include "vector_float2.hpp"
 #include "world/block.hpp"
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 
 const int LOAD_RADIUS = 8;
 
@@ -54,14 +54,15 @@ Application::Application()
                     .screen_height = m_window.get_height(),
                     .scale = 1}),
       m_ui_shader("assets/shaders/ui.shader"),
+      m_ui_block_shader("assets/shaders/ui_block.shader"),
       m_crosshair_texture(load_texture_2d("assets/textures/ui/crosshair.png")),
       m_hotbar_texture(load_texture_2d("assets/textures/ui/hotbar.png")),
       m_hotbar_slot_active(load_texture_2d("assets/textures/ui/hotbar_slot_active.png")),
       m_ui_quad(create_unit_quad_mesh())
 {
     init_block_type_table();
+    m_block_icons = create_block_icon_mesh();
 
-    std::cout << m_ui_context.scale << std::endl;
     m_ui_elements.push_back({&m_crosshair_texture,
                              glm::vec2(0.0f),
                              glm::vec2(CROSSHAIR_SIZE * m_ui_context.scale),
@@ -134,6 +135,8 @@ void Application::update_ui()
     {
         draw_ui_element(element, m_ui_quad, m_ui_shader, screen_w, screen_h);
     }
+
+    draw_hotbar_items(m_player.get_inventory(), m_block_icons, m_ui_block_shader, m_block_textures, m_ui_context);
 
     GLCall(glEnable(GL_DEPTH_TEST));
 }
@@ -240,7 +243,7 @@ void Application::run()
                              get_selected_block(m_player.get_inventory()), dt);
 
         m_player.look(xrel, yrel);
-        m_player.update(read_move_input(), dt);
+        m_player.update(read_move_input(), m_world, dt);
         m_camera.set_pose(m_player.get_eye_position(), m_player.get_yaw(), m_player.get_pitch());
 
         glm::mat4 view_projection = m_camera.get_proj_matrix() * m_camera.get_view_matrix();

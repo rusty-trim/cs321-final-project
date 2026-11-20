@@ -16,5 +16,6 @@ struct WorldData
 void rebuild_dirty_meshes(WorldData &world);
 void update_world_streaming(WorldData &world, glm::vec3 camera_pos, int load_radius);
 BlockID get_world_block(const WorldData &world, int world_x, int world_y, int world_z);
+bool is_world_block_solid(const WorldData &world, int world_x, int world_y, int world_z);
 bool set_world_block(WorldData &world, int world_x, int world_y, int world_z, BlockID id);
 void destroy_world(WorldData &world);

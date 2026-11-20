@@ -7,13 +7,12 @@
 #include "world/world.hpp"
 #include <limits>
 
-static bool block_overlaps_player(glm::ivec3 block, const Player &player)
+static bool block_overlaps_player(glm::ivec3 block, glm::vec3 pos)
 {
-    glm::vec3 p = player.get_position();
     float half = Player::WIDTH / 2;
 
-    glm::vec3 pmin(p.x - half, p.y, p.z - half);
-    glm::vec3 pmax(p.x + half, p.y + Player::HEIGHT, p.z + half);
+    glm::vec3 pmin(pos.x - half, pos.y, pos.z - half);
+    glm::vec3 pmax(pos.x + half, pos.y + Player::HEIGHT, pos.z + half);
 
     glm::vec3 bmin(block);
     glm::vec3 bmax = bmin + glm::vec3(1.0f);
@@ -115,7 +114,7 @@ void update_block_placing(BlockPlaceState &state, WorldData &world, const Player
     if (get_world_block(world, place.x, place.y, place.z) != BlockType::BLOCK_AIR)
         return;
 
-    if (block_overlaps_player(place, player))
+    if (block_overlaps_player(place, player.get_pos()))
         return;
 
     if (set_world_block(world, place.x, place.y, place.z, block_id))
